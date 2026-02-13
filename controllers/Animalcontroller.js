@@ -26,24 +26,42 @@ exports.listarAnimales = async (req, res) => {
 
 // Obtener un animal por nombre
 exports.getAnimal = async (req, res) => {
-    const nombre = req.params.nombre;
+    const nombreBuscado = req.params.nombre;
 
-    const animalData = Animaljson.find(
-        a => a.nombre.toLowerCase() === nombre.toLowerCase()
-    );
+    for (let i = 0; i < Animaljson.length; i++) {
+        // Comparamos el nombre en minúsculas para que no importe si escriben "Panda" o "panda"
+        if (Animaljson[i].nombre.toLowerCase() === nombreBuscado.toLowerCase()) {
 
-    if (!animalData) {
-        return res.status(404).json({ error: 'Animal no encontrado' });
+            let animalInstance = new Animal(
+                Animaljson[i].nombre,
+                Animaljson[i].edad,
+                Animaljson[i].tipo,
+                Animaljson[i].peso,
+                Animaljson[i].altura,
+                Animaljson[i].jaula
+            );
+
+            return res.json(animalInstance);
+        }
     }
+    return res.status(404).json({ error: 'Animal no encontrado' });
+};
 
-    const animal = new Animal(
-        animalData.nombre,
-        animalData.edad,
-        animalData.tipo,
-        animalData.peso,
-        animalData.altura,
-        animalData.jaula
-    );
-
-    res.json(animal);
+// Obtener un animal por jaula
+exports.getJaula = async (req, res) => {
+    const jaulaId = parseInt(req.params.jaula);
+    for (let i = 0; i < Animaljson.length; i++) {
+        if (Animaljson[i].jaula === jaulaId) {
+            let animalInstance = new Animal(
+                Animaljson[i].nombre,
+                Animaljson[i].edad,
+                Animaljson[i].tipo,
+                Animaljson[i].peso,
+                Animaljson[i].altura,
+                Animaljson[i].jaula
+            );
+            return res.json(animalInstance);
+        }
+    }
+    return res.status(404).json({ message: 'Animal no encontrado en la jaula especificada' });
 };
