@@ -7,8 +7,7 @@ const AnimalController = require('../controllers/Animalcontroller');
 router.get('/animales', AnimalController.listarAnimales);
 
 // Obtener un animal por nombre
-router.get('/animales/:nombre', AnimalController.getAnimal);
-
-router.get('/animales/:id', AnimalController.getJaula);
-
+router.get('/animales/nombre/:nombre', AnimalController.getAnimal);
+//por jaula
+router.get('/animales/jaula/:jaula', AnimalController.getJaula);
 module.exports = router;
