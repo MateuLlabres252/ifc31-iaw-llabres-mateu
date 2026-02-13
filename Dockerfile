@@ -1,5 +1,5 @@
-FROM node:22
-RUN addgroup -S animales && useradd -S mateullabres -g animales
+FROM node:22-alpine
+RUN addgroup -S animales && adduser -S mateullabres -G animales
 USER mateullabres
 WORKDIR /app
 RUN chown mateullabres:animales /app
